@@ -20,7 +20,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.qa.opencart.exceptions.ElementException;
+import com.qa.opencart.exceptions.ElementExceptions;
 import com.qa.opencart.factory.DriverFactory;
 
 public class ElementUtil {
@@ -37,7 +37,7 @@ public class ElementUtil {
 
     public void doSendKeys(By locator, String value) {
         if (value == null) {
-            throw new ElementException("===value can not be null====");
+            throw new ElementExceptions("===value can not be null====");
         }
         getElement(locator).sendKeys(value);
     }
@@ -58,7 +58,7 @@ public class ElementUtil {
         try {
             return getElement(locator).isDisplayed();
         } catch (NoSuchElementException e) {
-            throw new ElementException("===ELEMENT NOT FOUND===");
+            throw new ElementExceptions("===ELEMENT NOT FOUND===");
         }
     }
 

@@ -1,5 +1,7 @@
 package com.qa.opencart.constants;
 
+import java.util.List;
+
 public class AppConstants {
     public static final int DEFAULT_SHORT_WAIT = 5;
     public static final int DEFAULT_MEDIUM_WAIT = 10;
@@ -15,6 +17,7 @@ public class AppConstants {
 
 
     public static final int ACC_PAGE_HEADERS_COUNT = 4;
+    public static final String USER_REGISTER_SUCCESS_MESSG = "Your Account Has Been Created!";
     public static List<String> expectedAccPageHeadersList = List.of("My Account",
             "My Orders",
             "My Affiliate Account",

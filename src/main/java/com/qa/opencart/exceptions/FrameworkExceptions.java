@@ -1,7 +1,7 @@
 package com.qa.opencart.exceptions;
 
 public class FrameworkExceptions extends RuntimeException {
-    public FrameworkException(String mesg) {
+    public FrameworkExceptions(String mesg) {
         super(mesg);
     }
 }

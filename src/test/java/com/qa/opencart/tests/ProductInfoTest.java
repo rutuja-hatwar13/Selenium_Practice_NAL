@@ -4,8 +4,12 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.qa.opencart.base.BaseTest;
+import com.qa.opencart.utils.ExcelUtil;
+
+import java.util.Map;
 
 public class ProductInfoTest extends BaseTest{
 
@@ -54,7 +58,31 @@ public class ProductInfoTest extends BaseTest{
         Assert.assertEquals(actImagesCount, imageCount);
     }
 
+    @Test
+    public void productInfoTest() {
+        searchResultsPage = accPage.doSearch("macbook");
+        productInfoPage = searchResultsPage.selectProduct("MacBook Pro");
+        Map<String, String> productDataMap = productInfoPage.getProductData();
 
+        SoftAssert softAssert = new SoftAssert();
+
+        softAssert.assertEquals(productDataMap.get("productname"), "MacBook Pro");
+
+        softAssert.assertEquals(productDataMap.get("Brand"), "Apple");
+        softAssert.assertEquals(productDataMap.get("Availability"), "Out Of Stock");
+        softAssert.assertEquals(productDataMap.get("Reward Points"), "800");
+        softAssert.assertEquals(productDataMap.get("Product Code"), "Product 18");
+
+        softAssert.assertEquals(productDataMap.get("productprice"), "$2,000.00");
+        softAssert.assertEquals(productDataMap.get("extaxprice"), "$2,000.00");
+
+        softAssert.assertAll();//7 --> 1 failed
+
+    }
+
+    //AAA pattern -- Arrange Act Assert
+    // we can have multiple soft assertions in a single test case
+    //but only one hard assert in the test case
 
 
 }

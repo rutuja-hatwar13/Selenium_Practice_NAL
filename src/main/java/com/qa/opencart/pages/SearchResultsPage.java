@@ -19,7 +19,6 @@ public class SearchResultsPage {
     private final By searchResults = By.cssSelector("div.product-thumb");
     private final By resultsHeader = By.cssSelector("div#content h1");
 
-
     public int getSearchResultsCount() {
         int resultCount =
                 eleUtil.waitForElementsPresence(searchResults, AppConstants.DEFAULT_MEDIUM_WAIT).size();

@@ -12,7 +12,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import com.qa.opencart.errors.AppError;
-import com.qa.opencart.exceptions.FrameworkException;
+import com.qa.opencart.exceptions.FrameworkExceptions;
 
 public class DriverFactory {
 
@@ -49,7 +49,7 @@ public class DriverFactory {
 
             default:
                 System.out.println(AppError.INVALID_BROWSER_MESG + " : " + browserName);
-                throw new FrameworkException("=====INVALID BROWSER====");
+                throw new FrameworkExceptions("=====INVALID BROWSER====");
         }
 
         driver.manage().deleteAllCookies();
