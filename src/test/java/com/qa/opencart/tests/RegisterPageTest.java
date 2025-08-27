@@ -44,5 +44,4 @@ public class RegisterPageTest extends BaseTest{
                 (registerPage.userRegister(firstName, lastName, StringUtils.getRandomEMail(), telephone, password, subscribe));
     }
 
-
 }

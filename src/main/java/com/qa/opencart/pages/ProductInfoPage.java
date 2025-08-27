@@ -1,15 +1,15 @@
 package com.qa.opencart.pages;
 
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.qa.opencart.constants.AppConstants;
 import com.qa.opencart.utils.ElementUtil;
-
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class ProductInfoPage {
 
@@ -30,14 +30,13 @@ public class ProductInfoPage {
 
     public String getProductHeader() {
         String headerVal = eleUtil.waitForElementVisible(header, AppConstants.DEFAULT_SHORT_WAIT).getText();
-        System.out.println("product header is --->"+ headerVal);
+        System.out.println("product header is --->" + headerVal);
         return headerVal;
     }
 
     public int getProductImages() {
-        int imagesCount =
-                eleUtil.waitForElementsVisible(productImages, AppConstants.DEFAULT_MEDIUM_WAIT).size();
-        System.out.println("Total number of images : "+ imagesCount);
+        int imagesCount = eleUtil.waitForElementsVisible(productImages, AppConstants.DEFAULT_MEDIUM_WAIT).size();
+        System.out.println("Total number of images : " + imagesCount);
         return imagesCount;
     }
 

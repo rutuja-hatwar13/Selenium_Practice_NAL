@@ -1,5 +1,7 @@
 package com.qa.opencart.tests;
 
+import java.util.Map;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -8,8 +10,6 @@ import org.testng.asserts.SoftAssert;
 
 import com.qa.opencart.base.BaseTest;
 import com.qa.opencart.utils.ExcelUtil;
-
-import java.util.Map;
 
 public class ProductInfoTest extends BaseTest{
 
@@ -31,7 +31,15 @@ public class ProductInfoTest extends BaseTest{
         };
     }
 
-    @Test(dataProvider = "getProducts")
+
+    @DataProvider
+    public Object[][] getProductTestData() {
+        return  ExcelUtil.getTestData("product");
+    }
+
+
+
+    @Test(dataProvider = "getProductTestData")
     public void productHeaderTest(String searchKey, String productName) {
         searchResultsPage = accPage.doSearch(searchKey);
         productInfoPage = searchResultsPage.selectProduct(productName);
@@ -58,6 +66,10 @@ public class ProductInfoTest extends BaseTest{
         Assert.assertEquals(actImagesCount, imageCount);
     }
 
+    //macbook,MacBookPro,Apple,OutOfStock,800,Product18,2000.00,2000.00
+    //macbook,MacBookAir,Apple,OutOfStock,800,Product18,2000.00,2000.00
+    //imac,iMac,Apple,OutOfStock,800,Product18,2000.00,2000.00
+
     @Test
     public void productInfoTest() {
         searchResultsPage = accPage.doSearch("macbook");
@@ -83,6 +95,5 @@ public class ProductInfoTest extends BaseTest{
     //AAA pattern -- Arrange Act Assert
     // we can have multiple soft assertions in a single test case
     //but only one hard assert in the test case
-
 
 }

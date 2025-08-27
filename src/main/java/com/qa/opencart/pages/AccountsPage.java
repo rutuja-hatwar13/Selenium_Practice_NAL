@@ -51,6 +51,4 @@ public class AccountsPage {
         return new SearchResultsPage(driver);
 
     }
-
-
 }
