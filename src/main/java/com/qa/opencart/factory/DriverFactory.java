@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.qa.opencart.exceptions.FrameworkExceptions;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -14,9 +17,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
-import com.aventstack.chaintest.plugins.ChainTestListener;
 import com.qa.opencart.errors.AppError;
-import com.qa.opencart.exceptions.FrameworkExceptions;
 
 public class DriverFactory {
 
@@ -27,39 +28,44 @@ public class DriverFactory {
 
     public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<WebDriver>();
 
+    private static final Logger log = LogManager.getLogger(DriverFactory.class);
+
+    public OptionsManager optionsManager;
+
     /**
      * This method is init the driver on the basis of browser...
+     *
      * @param browserName
      * @return it returns driver
      */
     public WebDriver initDriver(Properties prop) {
 
         String browserName = prop.getProperty("browser");
-        System.out.println("browser name : " + browserName);
+        // System.out.println("browser name : " + browserName);
+        log.info("browser name : " + browserName);
 
         highlightEle = prop.getProperty("highlight");
+        optionsManager = new OptionsManager(prop);
 
         switch (browserName.trim().toLowerCase()) {
             case "chrome":
-                // driver = new ChromeDriver();
-                tlDriver.set(new ChromeDriver());
+                tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
                 break;
             case "firefox":
-                // driver = new FirefoxDriver();
-                tlDriver.set(new FirefoxDriver());
+                tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
                 break;
             case "edge":
-                // driver = new EdgeDriver();
-                tlDriver.set(new EdgeDriver());
+                tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
                 break;
             case "safari":
-                // driver = new SafariDriver();
                 tlDriver.set(new SafariDriver());
                 break;
-
             default:
-                System.out.println(AppError.INVALID_BROWSER_MESG + " : " + browserName);
+                log.error(AppError.INVALID_BROWSER_MESG + " : " + browserName);
+                FrameworkExceptions fe = new FrameworkExceptions(AppError.INVALID_BROWSER_MESG + " : " + browserName);
+                log.error("Exception occurred while initializing driver: ", fe);
                 throw new FrameworkExceptions("=====INVALID BROWSER====");
+
         }
 
         getDriver().manage().deleteAllCookies();
@@ -81,18 +87,59 @@ public class DriverFactory {
 
     /**
      * This method is init the prop with properties file...
+     *
      * @return
      */
+
+    // mvn clean install -Denv="qa"
+    // mvn clean install
+    // mvn clean install -Dsurefire.suiteXmlFiles=src/test/resources/testrunners/testng_regression.xml -Denv="dev"
     public Properties initProp() {
         prop = new Properties();
+        FileInputStream ip = null;
+
+        String envName = System.getProperty("env");
+        log.info("Env name =======>" + envName);
+
         try {
-            FileInputStream ip = new FileInputStream("./src/test/resources/config/config.properties");
-            prop.load(ip);
+            if (envName == null) {
+                log.warn("no env.. is passed, hence running tcs on QA environment...by default..");
+                ip = new FileInputStream("./src/test/resources/config/config.qa.properties");
+            }
+
+            else {
+                switch (envName.trim().toLowerCase()) {
+                    case "qa":
+                        ip = new FileInputStream("./src/test/resources/config/config.qa.properties");
+                        break;
+                    case "stage":
+                        ip = new FileInputStream("./src/test/resources/config/config.stage.properties");
+                        break;
+                    case "uat":
+                        ip = new FileInputStream("./src/test/resources/config/config.uat.properties");
+                        break;
+                    case "dev":
+                        ip = new FileInputStream("./src/test/resources/config/config.dev.properties");
+                        break;
+                    case "prod":
+                        ip = new FileInputStream("./src/test/resources/config/config.properties");
+                        break;
+                    default:
+                        log.error("Env value is invalid...plz pass the right env value..");
+                        throw new FrameworkExceptions("====INVALID ENVIRONMENT====");
+                }
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+
+        try {
+            prop.load(ip);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return prop;
     }
 
@@ -114,4 +161,5 @@ public class DriverFactory {
         return ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BASE64);// temp dir
 
     }
+
 }
