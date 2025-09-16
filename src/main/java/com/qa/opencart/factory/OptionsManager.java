@@ -1,5 +1,4 @@
 package com.qa.opencart.factory;
-
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;

@@ -10,6 +10,7 @@ import com.qa.opencart.constants.AppConstants;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Link;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -21,6 +22,7 @@ import io.qameta.allure.Story;
 public class LoginPageTest extends BaseTest {
 
     @Description("login page title test....")
+    @Link("")
     @Owner("Naveen Automation Labs")
     @Severity(SeverityLevel.MINOR)
     @Test
@@ -56,7 +58,7 @@ public class LoginPageTest extends BaseTest {
         Assert.assertTrue(loginPage.isheaderExist());
     }
 
-    @Description("user is able to login to app....")
+    @Description("user is able to login to app with the correct credentials....")
     @Owner("Naveen Automation Labs")
     @Severity(SeverityLevel.BLOCKER)
     @Test(priority = Integer.MAX_VALUE)
